@@ -1,0 +1,21 @@
+name: Deploy ZKnowledge to zwiki.ztrader.ai
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "docusaurus/**"
+      - ".github/workflows/deploy.yml"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚀 SSH to server & update
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            bash /root/update_wiki.sh
