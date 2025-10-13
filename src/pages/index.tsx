@@ -1,30 +1,44 @@
 import React from 'react';
 import Layout from '@theme/Layout';
-import styles from './index.module.css';
+import Link from '@docusaurus/Link';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 export default function Home(): JSX.Element {
-  return (
-    <Layout
-      title="ZKnowledge Portal"
-      description="Obsidian Gold Oracle of Intelligence · Liquidity · Language"
-    >
-      <main className={styles.hero}>
-        <div className={styles.overlay}></div>
+  const {siteConfig} = useDocusaurusContext();
+  const heroUrl = useBaseUrl('/img/obsidian-gold.png'); // ← 指向 static/img/obsidian-gold.png
 
-        <div className={styles.content}>
-          <h1 className={styles.title}>ZKnowledge Portal</h1>
-          <p className={styles.subtitle}>
-            <span>Macro X Options X Quant X AI Codex</span>
+  return (
+    <Layout title="ZKnowledge Portal" description="The Oracle of Liquidity • Intelligence • Language">
+      <header
+        className="hero hero--dark heroBanner"
+        style={{
+          backgroundImage: `url(${heroUrl})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <div className="container heroContent">
+          <h1 className="hero__title">ZKNOWLEDGE PORTAL</h1>
+          <p className="hero__subtitle">
+            ⚡ The Oracle of Intelligence · Liquidity · Language ⚡
           </p>
-          <p className={styles.phrase}>
-            “在黑曜金之光下，知识不再被书写——它被召唤。”
-          </p>
-          <p className={styles.links}>
-            <a href="/wiki/intro" className={styles.link}>Enter Wiki</a>
-            <a href="https://ztrader.ai" className={styles.link}>Main Site</a>
-            <a href="https://www.youtube.com/@ravenrockfintech" className={styles.link}>YouTube</a>
-          </p>
+          <div className="buttons">
+            <Link className="button button--primary button--lg" to="/wiki/intro">
+              Enter Wiki
+            </Link>
+            <Link className="button button--secondary button--lg" to="https://ztrader.ai" style={{marginLeft: 12}}>
+              Main Site
+            </Link>
+            <Link className="button button--secondary button--lg" to="https://youtube.com/@ravenrockfintech" style={{marginLeft: 12}}>
+              YouTube
+            </Link>
+          </div>
         </div>
+      </header>
+
+      <main className="homeMain">
+        {/* 这里可以继续放简介或 Cards */}
       </main>
     </Layout>
   );
