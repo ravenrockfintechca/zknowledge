@@ -3,19 +3,73 @@ name: Deploy ZKnowledge to zwiki.ztrader.ai
 on:
   push:
     branches: [ main ]
+    # 只在这些路径变化时触发（改文档不浪费时间）
     paths:
-      - "docusaurus/**"
-      - ".github/workflows/deploy.yml"
+      - 'docs/**'
+      - 'src/pages/**'
+      - 'static/**'
+      - 'docusaurus.config.*'
+      - 'sidebars.*'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-zwiki
+  cancel-in-progress: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: 🚀 SSH to server & update
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Enable corepack (pnpm)
+        run: corepack enable
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Cache pnpm store
+        uses: actions/cache@v3
+        with:
+          path: ~/.pnpm-store
+          key: pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-store-
+
+      - name: Install deps (fast)
+        run: pnpm install --frozen-lockfile
+
+      - name: Build site
+        run: pnpm build
+
+      # 把本地构建好的 build/ 先上传到服务器临时目录
+      - name: Upload build to server (/tmp/zk-build)
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "build/**"
+          target: "/tmp/zk-build"
+
+      # 在服务器上用 rsync 原子同步到 Nginx 根目录，并清理临时目录
+      - name: Sync & activate on server
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            bash /root/update_wiki.sh
+            set -e
+            mkdir -p /var/www/zknowledge/out
+            rsync -av --delete /tmp/zk-build/ /var/www/zknowledge/out/
+            chown -R www-data:www-data /var/www/zknowledge/out
+            rm -rf /tmp/zk-build
