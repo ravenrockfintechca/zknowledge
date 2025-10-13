@@ -22,7 +22,7 @@ export default function Home(): JSX.Element {
           <div className="zk-hero__cta">
             <Link
               className="zk-btn zk-btn--ghost"
-              to="https://zwiki.ztrader.ai/wiki"
+              to="https://zwiki.ztrader.ai/wiki/intro/"
             >
               ENTER
             </Link>
