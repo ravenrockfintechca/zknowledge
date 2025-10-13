@@ -6,7 +6,7 @@ export default function Home(): JSX.Element {
   return (
     <Layout
       title="ZKnowledge Portal"
-      description="Codex · Market Liquidity · Language"
+      description="BOOK OF MARKET — The Macro Trading Codex · Liquidity · Language"
     >
       <main className="zk-hero">
         {/* 光扫容器 */}
@@ -14,9 +14,9 @@ export default function Home(): JSX.Element {
 
         {/* 文案层 */}
         <div className="zk-hero__content">
-          <h1 className="zk-hero__title">BOOK OF MARKET</h1>
+          <h1 className="zk-hero__title">Macro X Options X Quant X AI</h1>
           <p className="zk-hero__subtitle">
-            THE MACRO TRADING CODEX · Liquidity · Language
+            THE CODEX · Liquidity · Language
           </p>
 
           <div className="zk-hero__cta">
