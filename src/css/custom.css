@@ -106,3 +106,57 @@ blockquote {
 .footer a:hover {
   color: #f2d56b !important;
 }
+/* ---------- IMAGE HARD RESET (docs + home) ---------- */
+
+/* 1) 文档页/任意位置的 <img> 全部还原到正常显示 */
+.theme-doc-markdown img,
+.markdown img,
+article img,
+figure img,
+img {
+  all: unset !important;           /* 把之前的奇怪属性全清掉 */
+  display: block !important;
+  max-width: 100% !important;
+  height: auto !important;
+  background: transparent !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  z-index: 1 !important;
+}
+
+/* 2) 不要让覆盖层挡住内容（有些主题/自定义会放 ::before/::after 做遮罩） */
+.hero::before,
+.hero::after,
+.heroBanner::before,
+.heroBanner::after,
+.theme-doc-markdown::before,
+.theme-doc-markdown::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* 3) 万一有满屏遮罩层，把它们彻底透明+不接管事件 */
+[class*="overlay"],
+[class*="mask"],
+[class*="veil"] {
+  background: transparent !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* 4) 避免父级用混合模式/滤镜影响子元素（常见坑） */
+.markdown *,
+.theme-doc-markdown * {
+  mix-blend-mode: normal !important;
+  filter: none !important;
+}
+
+/* 5) 首页 Hero 容器确保在图片之上不再有遮罩且能看到背景图 */
+.hero, .heroBanner {
+  background-blend-mode: normal !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
