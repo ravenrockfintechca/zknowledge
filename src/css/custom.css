@@ -1,168 +1,64 @@
-/* ------------------------------
- * 基础变量（可按需微调）
- * ------------------------------ */
+/* 黑金风格 */
 :root {
-  --zk-gold: #d8c27b;            /* 金色基调 */
-  --zk-gold-soft: #cdb870;       /* 柔和金 */
-  --zk-ink: #0f0f10;             /* 背景墨色 */
-  --zk-overlay: rgba(0,0,0,0.45);/* 暗化遮罩：觉得太亮/太暗可调 0.35~0.55 */
-  --zk-text: #ffffff;
-  --zk-text-dim: #d6d6d6;
-  --zk-border: rgba(255,255,255,0.14);
-  --zk-shadow: 0 10px 30px rgba(0,0,0,0.45);
-  --zk-radius: 18px;
+  --ifm-background-color: #000;
+  --ifm-color-primary: #d4af37; /* 金色 */
+  --ifm-color-primary-dark: #b38e2f;
+  --ifm-color-primary-light: #f5d77f;
+  --ifm-font-color-base: #d4af37;
+  --ifm-link-color: #f5d77f;
+  --ifm-navbar-background-color: #000;
+  --ifm-navbar-link-color: #d4af37;
+  --ifm-navbar-link-hover-color: #fff;
+  --ifm-footer-background-color: #000;
+  --ifm-footer-color: #d4af37;
 }
 
-/* 引入“投行风”无衬线 Inter（含系统回退） */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
-
-html, body {
-  background: var(--zk-ink);
-  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
-               Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans",
-               "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol", "Noto Color Emoji";
+html[data-theme='dark'] {
+  --ifm-background-color: #000;
 }
 
-/* ------------------------------
- * 顶部导航：在首页海报上保持白色与对比
- * ------------------------------ */
+body {
+  background-color: #000 !important;
+  color: #d4af37 !important;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
 .navbar {
-  background: transparent;
-  box-shadow: none;
+  background-color: #000 !important;
+  border-bottom: 1px solid rgba(212,175,55,0.2);
 }
-.navbar .navbar__title,
-.navbar .navbar__brand,
-.navbar .navbar__items a,
-.navbar .navbar__items button {
+
+.navbar__title,
+.navbar__link {
+  color: #d4af37 !important;
+}
+
+a {
+  color: #f5d77f !important;
+}
+
+a:hover {
   color: #fff !important;
-  text-shadow: 0 2px 12px rgba(0,0,0,0.25);
-}
-.navbar .navbar__items a:hover {
-  color: var(--zk-gold) !important;
 }
 
-/* 当页面滚动后（非透明区域）让导航回到正常主题色，可按需保留或删除 */
-.navbar--fixed-top.navbar--scrolled {
-  backdrop-filter: saturate(140%) blur(8px);
-  background: rgba(15,15,16,0.75);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+/* Doc内容区 */
+.markdown > * {
+  color: #d4af37 !important;
 }
 
-/* ------------------------------
- * 主页英雄区（全屏、背景、遮罩、光扫）
- * ------------------------------ */
-.zk-hero {
-  position: relative;
-  height: 100vh;
-  width: 100%;
-  overflow: hidden;
-  display: grid;
-  place-items: center;
-  isolation: isolate; /* 让遮罩与shine不影响外层 */
-  /* 背景图：保持全屏覆盖 */
-  background: url('/img/obsidian-gold.png') center/cover no-repeat fixed;
+/* Code区块 */
+code, pre {
+  background-color: #111 !important;
+  color: #f5d77f !important;
+  border: 1px solid rgba(212,175,55,0.2);
 }
 
-/* 暗化遮罩：让海报不过亮，提升文字可读性 */
-.zk-hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(65% 55% at 50% 60%, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.55) 100%),
-    linear-gradient(to bottom, var(--zk-overlay), var(--zk-overlay));
-  z-index: 0;
-}
-
-/* 光扫动画层：温和的金色扫光 */
-.zk-hero__shine {
-  position: absolute;
-  inset: -20%;
-  pointer-events: none;
-  background:
-    radial-gradient(1200px 800px at -20% 40%, rgba(255,244,206,0.18), transparent 70%),
-    radial-gradient(1000px 700px at 120% 60%, rgba(255,238,180,0.12), transparent 70%);
-  animation: zkShine 9s linear infinite;
-  mix-blend-mode: screen;
-  z-index: 1;
-}
-@keyframes zkShine {
-  0%   { transform: translateX(-6%) translateY(0) rotate(0.001deg); opacity: .55; }
-  50%  { transform: translateX(6%)  translateY(-1%) rotate(0.001deg); opacity: .85; }
-  100% { transform: translateX(-6%) translateY(0) rotate(0.001deg); opacity: .55; }
-}
-
-/* 文案层 */
-.zk-hero__content {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  padding: 0 2rem;
-}
-
-/* 标题：投行风 + 金色质感 */
-.zk-hero__title {
-  font-weight: 900;
-  letter-spacing: .06em;
-  font-size: clamp(42px, 6vw, 88px);
-  color: var(--zk-gold);
-  line-height: 1.05;
-  text-shadow:
-    0 2px 0 rgba(0,0,0,0.20),
-    0 14px 28px rgba(0,0,0,0.45),
-    0 0 30px rgba(216,194,123,0.18);
-  margin: 0 0 18px 0;
-  filter: saturate(110%);
-}
-
-/* 副标题 */
-.zk-hero__subtitle {
-  color: var(--zk-text);
-  opacity: 0.92;
-  font-weight: 500;
-  letter-spacing: .03em;
-  font-size: clamp(14px, 1.4vw, 18px);
-  text-shadow: 0 6px 18px rgba(0,0,0,0.5);
-  margin: 0 0 34px 0;
-}
-
-/* CTA（仅一个） */
-.zk-hero__cta {
-  display: flex;
-  justify-content: center;
-}
-
-/* 精致“Enter”按钮：细金色描边、玻璃感、悬浮发光 */
-.zk-btn {
-  --btn-pad-y: 14px;
-  --btn-pad-x: 28px;
-  padding: var(--btn-pad-y) var(--btn-pad-x);
-  border-radius: var(--zk-radius);
-  border: 1px solid var(--zk-border);
-  background: rgba(255,255,255,0.04);
-  color: var(--zk-text);
-  font-weight: 700;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  text-decoration: none;
-  backdrop-filter: blur(6px) saturate(120%);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), var(--zk-shadow);
-  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease, color .2s ease;
-}
-
-.zk-btn--ghost:hover {
-  transform: translateY(-2px);
-  border-color: rgba(216,194,123,0.6);
-  box-shadow:
-    0 10px 28px rgba(0,0,0,0.45),
-    0 0 24px rgba(216,194,123,0.35);
-}
-.zk-btn--ghost:active {
-  transform: translateY(0);
-}
-
-/* 小屏优化 */
-@media (max-width: 768px) {
-  .navbar .navbar__items { gap: .25rem; }
-  .zk-btn { --btn-pad-y: 12px; --btn-pad-x: 24px; font-size: .9rem; }
+/* 移动端优化 */
+@media screen and (max-width: 768px) {
+  .navbar__title {
+    font-size: 1rem;
+  }
+  .markdown h1, .markdown h2 {
+    font-size: 1.25rem;
+  }
 }
