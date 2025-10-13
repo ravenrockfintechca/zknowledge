@@ -1,64 +1,124 @@
-/* 黑金风格 */
+/* === ZKnowledge — Obsidian Gold on Black (Unified for light/dark) === */
+
+/* 调整一组更“亮”的金色，移动端也清晰 */
 :root {
-  --ifm-background-color: #000;
-  --ifm-color-primary: #d4af37; /* 金色 */
-  --ifm-color-primary-dark: #b38e2f;
-  --ifm-color-primary-light: #f5d77f;
-  --ifm-font-color-base: #d4af37;
-  --ifm-link-color: #f5d77f;
-  --ifm-navbar-background-color: #000;
-  --ifm-navbar-link-color: #d4af37;
-  --ifm-navbar-link-hover-color: #fff;
-  --ifm-footer-background-color: #000;
-  --ifm-footer-color: #d4af37;
+  --zk-gold: #E9C86B;         /* 主文字金色（不暗） */
+  --zk-gold-soft: #F2DCA0;    /* 次要金色（副标题/链接 hover） */
+  --zk-gold-dim: #C9A959;     /* 线/描边/弱提示 */
+  --zk-bg: #000000;           /* 纯黑背景 */
+  --zk-code-bg: #0F0F0F;      /* 代码块背景 */
+  --zk-link: #F2DCA0;         /* 链接初始色 */
+  --zk-link-hover: #FFFFFF;   /* 链接悬停色 */
 }
 
+/* 无论 light 还是 dark，都强制黑底金字 */
+html,
+html[data-theme='light'],
 html[data-theme='dark'] {
-  --ifm-background-color: #000;
+  --ifm-background-color: var(--zk-bg);
+  --ifm-background-surface-color: var(--zk-bg);
+
+  --ifm-font-color-base: var(--zk-gold);
+  --ifm-color-content: var(--zk-gold);
+
+  --ifm-heading-color: var(--zk-gold);
+  --ifm-color-primary: var(--zk-gold);
+  --ifm-color-primary-dark: var(--zk-gold-dim);
+  --ifm-color-primary-light: var(--zk-gold-soft);
+
+  --ifm-navbar-background-color: var(--zk-bg);
+  --ifm-footer-background-color: var(--zk-bg);
+
+  --ifm-link-color: var(--zk-link);
 }
 
-body {
-  background-color: #000 !important;
-  color: #d4af37 !important;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+/* 全局文本与背景（移动端 Safari 也吃这套） */
+html, body {
+  background: var(--zk-bg) !important;
+  color: var(--zk-gold) !important;
+  -webkit-text-size-adjust: 100%;
 }
 
-.navbar {
-  background-color: #000 !important;
-  border-bottom: 1px solid rgba(212,175,55,0.2);
+/* 导航栏 & 页脚 */
+.navbar,
+.footer {
+  background: var(--zk-bg) !important;
+  color: var(--zk-gold) !important;
+  border: 0;
+}
+.navbar__brand, .navbar__title, .navbar__link {
+  color: var(--zk-gold) !important;
+}
+.navbar__link:hover { color: var(--zk-link-hover) !important; }
+
+/* 面包屑、次要信息 */
+.breadcrumbs__link,
+.breadcrumbs__item--active .breadcrumbs__link {
+  color: var(--zk-gold-soft) !important;
 }
 
-.navbar__title,
-.navbar__link {
-  color: #d4af37 !important;
+/* 文档正文区域（标题、段落、列表、表格） */
+.theme-doc-markdown,
+.markdown {
+  color: var(--zk-gold) !important;
+}
+.theme-doc-markdown h1,
+.theme-doc-markdown h2,
+.theme-doc-markdown h3,
+.theme-doc-markdown h4,
+.theme-doc-markdown h5,
+.theme-doc-markdown h6,
+.markdown h1, .markdown h2, .markdown h3,
+.markdown h4, .markdown h5, .markdown h6 {
+  color: var(--zk-gold) !important;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+}
+.markdown p,
+.markdown li,
+.markdown th,
+.markdown td {
+  color: var(--zk-gold) !important;
 }
 
-a {
-  color: #f5d77f !important;
+/* 链接 */
+.markdown a,
+.theme-doc-markdown a,
+.menu__link {
+  color: var(--zk-link) !important;
+}
+.markdown a:hover,
+.theme-doc-markdown a:hover,
+.menu__link:hover {
+  color: var(--zk-link-hover) !important;
 }
 
-a:hover {
-  color: #fff !important;
+/* 侧边栏（移动端/桌面统一） */
+.theme-doc-sidebar-menu .menu__link,
+.theme-doc-sidebar-item-category .menu__list-item,
+.menu__caret {
+  color: var(--zk-gold) !important;
 }
 
-/* Doc内容区 */
-.markdown > * {
-  color: #d4af37 !important;
+/* 分割线、卡片描边等 */
+hr, .card {
+  border-color: rgba(233,200,107,0.25) !important;
 }
 
-/* Code区块 */
-code, pre {
-  background-color: #111 !important;
-  color: #f5d77f !important;
-  border: 1px solid rgba(212,175,55,0.2);
+/* 代码块/行内代码 */
+pre, code, .prism-code {
+  background: var(--zk-code-bg) !important;
+  color: var(--zk-gold-soft) !important;
+  border: 1px solid rgba(233,200,107,0.18) !important;
 }
 
-/* 移动端优化 */
-@media screen and (max-width: 768px) {
-  .navbar__title {
-    font-size: 1rem;
-  }
-  .markdown h1, .markdown h2 {
-    font-size: 1.25rem;
-  }
+/* 表格线条对比度 */
+.table, table, th, td {
+  border-color: rgba(233,200,107,0.22) !important;
+}
+
+/* 移动端可读性微调 */
+@media (max-width: 768px) {
+  .markdown h1 { font-size: 1.6rem; }
+  .markdown h2 { font-size: 1.35rem; }
+  .markdown p, .markdown li { font-size: 1.02rem; line-height: 1.65; }
 }
