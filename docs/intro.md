@@ -5,10 +5,13 @@ description: The Oracle of Intelligence · Liquidity · Language
 slug: /intro
 ---
 
-<div style="text-align:center; margin-top:40px;">
-
-<img src="/img/oracle-bg.png" alt="ZKnowledge Oracle" width="480" style="border-radius:12px; box-shadow:0 0 32px rgba(255,215,0,0.15);">
-
+<div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+  <img
+    src="/img/obsidian-gold.png"
+    alt="Obsidian Gold"
+    width="720"
+    style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px' }}
+  />
 </div>
 
 ---
