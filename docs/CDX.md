@@ -1,3 +1,76 @@
+CDX: Credit Default Swap Index
+
+What is CDX?
+
+The Credit Default Swap Index (CDX) is a standardized credit derivative that combines the credit risk of multiple companies into one tradable instrument.
+Unlike a single-name CDS, which references only one corporate or sovereign entity, a CDX represents a portfolio—or “basket”—of issuers, allowing investors to efficiently trade, hedge, or express macro-level credit views.
+
+A Credit Default Swap (CDS) itself is a bilateral contract:
+	•	The buyer pays a periodic premium (spread) to the seller.
+	•	In return, the seller provides compensation if the reference entity experiences a credit event (bankruptcy, restructuring, or failure to pay).
+
+A CDX extends this framework across many entities simultaneously, providing both diversification and liquidity.
+
+⸻
+
+Key Features
+
+Feature	Explanation
+Standardization & Liquidity	CDX contracts are standardized, with unified documentation and transparent pricing, which results in tighter bid-ask spreads and better liquidity compared to bespoke single-name CDS.
+Semiannual Roll & Reconstitution	Each CDX series “rolls” twice a year (March and September), updating its constituents to reflect the most liquid and representative credits in the market.
+Sub-Indices / Families	There are multiple families: CDX.NA.IG (North American Investment Grade), CDX.NA.HY (High Yield), and CDX.EM (Emerging Markets), among others—each capturing a distinct segment of the credit universe.
+Index Basis	The index basis is the difference between the traded index spread and the theoretical weighted average of its single-name constituents, often reflecting technical or liquidity factors.
+Credit Events & Settlement	If a reference entity defaults, settlement occurs through standardized ISDA auction procedures or, less commonly, via cash settlement.
+Risk Considerations	Though diversified, CDX instruments remain exposed to liquidity shocks, systemic credit deterioration, and roll-period structural shifts.
+
+
+⸻
+
+How It Works
+	1.	Constituent Selection
+Before each roll, major dealers collaborate to select the most liquid and representative names for inclusion in the upcoming CDX series.
+	2.	Fixed Coupon Determination
+Each new series is issued with a standardized fixed coupon rate (e.g., 100 bps for IG, 500 bps for HY) to simplify pricing and settlement.
+	3.	Trading & Price Dynamics
+CDX protection can be bought (to hedge or short credit) or sold (to take credit risk).
+When perceived credit risk rises, spreads widen; when credit improves, spreads tighten.
+	4.	Credit Event & Settlement
+If any constituent triggers a credit event, an ISDA credit event auction determines recovery value, and the contract settles accordingly.
+	5.	Rebalancing & Updating
+During each roll, downgraded or illiquid names are replaced to maintain representativeness and tradability.
+
+⸻
+
+Advantages and Limitations
+
+Advantages
+	•	Efficiency — Provides broad credit exposure with a single trade, instead of multiple CDS positions.
+	•	Diversification — Reduces idiosyncratic single-name default risk.
+	•	Liquidity — High transparency and dealer participation make CDX among the most liquid credit products.
+	•	Market Barometer — CDX spreads are widely used as a proxy for overall credit sentiment and systemic stress.
+
+Limitations & Risks
+	•	Liquidity Risk — Even standardized products can face wide spreads during market turmoil.
+	•	Basis Risk — The index spread may diverge from the average of its components’ CDS spreads.
+	•	Constituent Turnover — Periodic rebalancing can alter exposures mid-cycle.
+	•	Settlement Complexity — Credit-event determination and auction recovery processes can create timing and pricing uncertainty.
+
+⸻
+
+Common Use Cases
+	•	Hedging
+Portfolio managers hedge corporate bond or loan exposures by buying CDX protection, offsetting potential losses from defaults.
+	•	Speculation
+Traders express macro credit views—buying protection in anticipation of widening spreads, or selling protection to capture carry when credit is stable.
+	•	Relative-Value / Arbitrage
+Arbitrageurs exploit discrepancies between CDX spreads and the weighted average of single-name CDS or related cash-bond instruments.
+	•	Benchmarking
+Economists and strategists use CDX levels as a systemic credit-risk indicator, much like the VIX for equity volatility.
+
+⸻
+
+Would you like me to turn this into a dual-column bilingual MDX (English | 中文 side-by-side) or keep it as an English-only MDX for your wiki layout?
+
 CDX：信用违约掉期指数（Credit Default Swap Index）
 
 中文：什么是 CDX？
