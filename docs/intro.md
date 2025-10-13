@@ -3,18 +3,7 @@ sidebar_position: 1
 title: ZKnowledge · 神谕序章
 description: The Oracle of Intelligence · Liquidity · Language
 slug: /intro
----
-
-<div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-  <img
-    src="/img/obsidian-gold.png"
-    alt="Obsidian Gold"
-    width="720"
-    style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px' }}
-  />
-</div>
-
----
+--- 
 
 # 🜂 Welcome to **ZKnowledge Portal**
 
