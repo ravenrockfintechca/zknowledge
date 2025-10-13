@@ -122,3 +122,34 @@ pre, code, .prism-code {
   .markdown h2 { font-size: 1.35rem; }
   .markdown p, .markdown li { font-size: 1.02rem; line-height: 1.65; }
 }
+
+/* === 修复黑底金字模式下图片变暗问题 === */
+.markdown img,
+.theme-doc-markdown img,
+article img {
+  filter: none !important;
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+  background: transparent !important;
+  transition: none !important;
+  display: block;
+  margin: 1.5rem auto;
+  max-width: 100%;
+}
+
+/* 如果图片在暗背景下仍偏灰，可略提亮 */
+.markdown img:hover {
+  filter: brightness(1.08) !important;
+}
+
+/* 金色光晕边框，让图片不显得突兀 */
+.markdown img {
+  box-shadow: 0 0 20px rgba(233,200,107,0.15);
+  border: 1px solid rgba(233,200,107,0.25);
+  border-radius: 8px;
+}
+
+img {
+  -webkit-transform: translateZ(0);
+  will-change: opacity;
+}
