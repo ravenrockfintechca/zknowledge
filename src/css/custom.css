@@ -1,27 +1,98 @@
+/* === Global Base === */
+:root {
+  --gold: #d4af37; /* obsidian gold */
+  --obsidian: #0a0a0a;
+  --hero-text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+}
+
+/* === 移除上下横条，Hero全屏化 === */
 .heroBanner {
-  min-height: 72vh;
+  min-height: 100vh;
+  background: radial-gradient(circle at center, #141414 0%, #000 100%);
+  background-image: url("/img/obsidian-gold.png");
+  background-size: cover;
+  background-position: center;
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
 }
 
-.heroBanner::after {
+/* 金色发光遮罩 */
+.heroBanner::before {
   content: "";
   position: absolute;
   inset: 0;
-  /* 黑曜石 + 金色微晕 */
-  background: radial-gradient(60% 60% at 50% 40%, rgba(255,215,0,0.10), rgba(0,0,0,0.65) 60%, rgba(0,0,0,0.80) 100%);
+  background: radial-gradient(circle at 50% 40%, rgba(212,175,55,0.1), rgba(0,0,0,0.7) 80%);
 }
 
-.heroContent {
-  position: relative;
-  z-index: 1; /* 盖在遮罩上 */
-  text-align: center;
-  padding-top: 14vh;
-}
-
+/* === 中央文字 === */
 .hero__title {
+  font-family: "Helvetica Neue", "Noto Sans SC", sans-serif;
+  font-size: 3.6rem;
+  font-weight: 700;
+  color: var(--gold);
   letter-spacing: 0.08em;
+  text-shadow: var(--hero-text-shadow);
 }
 
+.hero__subtitle {
+  color: rgba(255,255,255,0.85);
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  text-shadow: var(--hero-text-shadow);
+}
+
+/* === 按钮组 === */
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.button {
+  font-size: 1.05rem;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 0.8rem 1.8rem;
+  border: 1px solid rgba(212,175,55,0.6);
+  background-color: transparent;
+  color: var(--gold);
+  transition: all 0.25s ease;
+  text-transform: uppercase;
+}
+
+.button:hover {
+  background: var(--gold);
+  color: var(--obsidian);
+  border-color: var(--gold);
+  box-shadow: 0 0 12px rgba(212,175,55,0.6);
+  transform: translateY(-2px);
+}
+
+/* === 让footer和header隐形（Hero页面） === */
+.navbar,
+.footer {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.footer {
+  display: none;
+}
+
+.navbar {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
+}
+
+/* 移除主内容下方多余留白 */
 .homeMain {
-  padding: 2rem 0 4rem;
+  display: none;
 }
