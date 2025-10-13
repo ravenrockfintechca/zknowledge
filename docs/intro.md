@@ -25,7 +25,7 @@ slug: /intro
 
 ✦ 导航
 
--  [核心文档 / Docs](/docs)
+-  [核心文档 / Docs](/wiki)
 -  [回到首页 / Portal](/)
 -  [Ztrader 主站](https://ztrader.ai)
 -  [YouTube 频道](https://www.youtube.com/@ravenrockfintech)
