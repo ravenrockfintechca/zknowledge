@@ -18,18 +18,29 @@ jobs:
       - name: 🧭 Checkout latest repo
         uses: actions/checkout@v4
 
-      - name: ⚙️ Setup Node.js and pnpm
+      - name: ⚙️ Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
-      - run: corepack enable
-      - run: corepack use pnpm@10.18.2
+
+      - name: 🔧 Enable Corepack & pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@10.18.2 --activate
+          pnpm --version
+
+      - name: 🔍 Validate lockfile exists
+        run: |
+          if [ ! -f pnpm-lock.yaml ]; then
+            echo "❌ Missing pnpm-lock.yaml — please commit your lockfile."
+            exit 1
+          fi
 
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: 🔎 Lint MDX to catch illegal "<digit" before build
+      - name: 🔎 Lint MDX for illegal "<digit"
         run: |
           if grep -RIn -E '<\s*[0-9]' docs; then
             echo "❌ Found illegal '<digit' pattern in docs (like <0.5). Use &lt; or backticks instead."
@@ -42,7 +53,7 @@ jobs:
       - name: 🧳 Compress build artifacts
         run: tar -C build -czf build.tar.gz .
 
-      - name: 🚀 Deploy to zwiki.ztrader.ai via SSH
+      - name: 🚀 Prepare upload folder on server
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -50,11 +61,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script_stop: true
           script: |
-            set -euo pipefail
-
-            echo "📂 Preparing temp directories..."
+            set -e
             mkdir -p /var/www/zknowledge/_incoming
-            rm -rf /var/www/zknowledge/_incoming/build.tar.gz || true
 
       - name: 📤 Upload build artifact to server
         uses: appleboy/scp-action@v0.1.7
@@ -74,7 +82,6 @@ jobs:
           script_stop: true
           script: |
             set -euo pipefail
-
             TMP=/var/www/zknowledge/_tmp_out
             DST=/var/www/zknowledge/out
             SRC=/var/www/zknowledge/_incoming/build.tar.gz
