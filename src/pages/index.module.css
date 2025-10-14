@@ -1,5 +1,4 @@
-/* === Hero Section 全屏样式 === */
-.zk-hero {
+.hero {
   position: relative;
   width: 100%;
   height: 100vh;
@@ -7,17 +6,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #000;
+  background: #000;
 }
 
-/* 背景图片层 */
-.zk-hero__bg {
+/* 背景图层（通过内联 style 注入 url） */
+.bg {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('/img/obsidian-gold.png');
+  inset: 0;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -26,12 +21,11 @@
 }
 
 /* 光扫层 */
-.zk-hero__shine {
+.shine {
   position: absolute;
-  top: 0;
+  inset: 0;
   left: -50%;
   width: 200%;
-  height: 100%;
   background: linear-gradient(
     120deg,
     rgba(255, 255, 255, 0) 0%,
@@ -42,27 +36,22 @@
   z-index: 2;
   pointer-events: none;
 }
-
 @keyframes shine {
-  0% {
-    transform: translateX(-50%) skewX(-20deg);
-  }
-  100% {
-    transform: translateX(50%) skewX(-20deg);
-  }
+  0%   { transform: translateX(-50%) skewX(-20deg); }
+  100% { transform: translateX(50%)  skewX(-20deg); }
 }
 
-/* 中央文字层 */
-.zk-hero__content {
+/* 内容居中 */
+.content {
   position: relative;
   z-index: 3;
   text-align: center;
   color: #e6c980;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   padding: 0 1.5rem;
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 }
 
-.zk-hero__title {
+.title {
   font-size: clamp(2.2rem, 5vw, 4rem);
   font-weight: 800;
   letter-spacing: 0.04em;
@@ -70,42 +59,33 @@
   margin-bottom: 1rem;
 }
 
-.zk-hero__subtitle {
+.subtitle {
   font-size: 1.2rem;
   font-weight: 400;
   color: #f5e3a0;
-  opacity: 0.9;
+  opacity: 0.92;
   margin-bottom: 2rem;
 }
 
-/* ENTER 按钮 */
-.zk-btn {
+/* CTA 按钮 */
+.btn {
   display: inline-block;
   padding: 0.7rem 2rem;
   border: 1px solid #e6c980;
-  border-radius: 50px;
+  border-radius: 999px;
   color: #e6c980;
   font-weight: 600;
   letter-spacing: 0.05em;
   transition: all 0.3s ease;
 }
-
-.zk-btn:hover {
+.btn:hover {
   background: #e6c980;
   color: #000;
   box-shadow: 0 0 20px rgba(230, 201, 128, 0.7);
 }
 
-/* 响应式居中 */
 @media (max-width: 768px) {
-  .zk-hero__title {
-    font-size: 2rem;
-  }
-  .zk-hero__subtitle {
-    font-size: 1rem;
-  }
-  .zk-btn {
-    padding: 0.6rem 1.6rem;
-    font-size: 0.9rem;
-  }
+  .title    { font-size: 2rem; }
+  .subtitle { font-size: 1rem; }
+  .btn      { padding: 0.6rem 1.6rem; font-size: 0.9rem; }
 }
