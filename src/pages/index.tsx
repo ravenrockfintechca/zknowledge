@@ -1,31 +1,31 @@
 import React from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
-import './index.module.css';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import styles from './index.module.css';
 
 export default function Home(): JSX.Element {
+  const bg = useBaseUrl('/img/obsidian-gold.png'); // 基于 baseUrl，避免 /wiki 前缀问题
+
   return (
     <Layout
       title="ZKnowledge Portal"
       description="BOOK OF MARKET — The Macro Trading Codex · Liquidity · Language"
     >
-      <main className="zk-hero">
-        {/* 背景图片 */}
-        <div className="zk-hero__bg" />
+      <main className={styles.hero}>
+        {/* 背景层 */}
+        <div className={styles.bg} style={{ backgroundImage: `url(${bg})` }} />
 
         {/* 光扫层 */}
-        <div className="zk-hero__shine" />
+        <div className={styles.shine} />
 
-        {/* 中央文字区 */}
-        <div className="zk-hero__content">
-          <h1 className="zk-hero__title">Macro × Options × Quant × AI</h1>
-          <p className="zk-hero__subtitle">THE CODEX · Liquidity · Language</p>
+        {/* 中央内容 */}
+        <div className={styles.content}>
+          <h1 className={styles.title}>Macro × Options × Quant × AI</h1>
+          <p className={styles.subtitle}>THE CODEX · Liquidity · Language</p>
 
-          <div className="zk-hero__cta">
-            <Link
-              className="zk-btn"
-              to="https://zwiki.ztrader.ai/wiki/intro/"
-            >
+          <div className={styles.cta}>
+            <Link className={styles.btn} to="https://zwiki.ztrader.ai/wiki/intro/">
               ENTER
             </Link>
           </div>
