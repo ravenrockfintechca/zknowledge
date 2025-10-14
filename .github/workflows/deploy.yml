@@ -13,88 +13,16 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: 🧭 Checkout latest repo
-        uses: actions/checkout@v4
-
-      - name: ⚙️ Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
-
-      - name: 🔧 Enable Corepack & pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@10.18.2 --activate
-          pnpm --version
-
-      - name: 🔍 Validate lockfile exists
-        run: |
-          if [ ! -f pnpm-lock.yaml ]; then
-            echo "❌ Missing pnpm-lock.yaml — please commit your lockfile."
-            exit 1
-          fi
-
-      - name: 📦 Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: 🔎 Lint MDX for illegal "<digit"
-        run: |
-          if grep -RIn -E '<\s*[0-9]' docs; then
-            echo "❌ Found illegal '<digit' pattern in docs (like <0.5). Use &lt; or backticks instead."
-            exit 1
-          fi
-
-      - name: 🏗️ Build Docusaurus
-        run: pnpm build
-
-      - name: 🧳 Compress build artifacts
-        run: tar -C build -czf build.tar.gz .
-
-      - name: 🚀 Prepare upload folder on server
+      - name: 🚀 Push latest docs to server & rebuild
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          script_stop: true
           script: |
-            set -e
-            mkdir -p /var/www/zknowledge/_incoming
-
-      - name: 📤 Upload build artifact to server
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          source: "build.tar.gz"
-          target: "/var/www/zknowledge/_incoming/"
-
-      - name: 🔄 Extract and atomically replace current version
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          script_stop: true
-          script: |
-            set -euo pipefail
-            TMP=/var/www/zknowledge/_tmp_out
-            DST=/var/www/zknowledge/out
-            SRC=/var/www/zknowledge/_incoming/build.tar.gz
-
-            echo "🧩 Unpacking new build..."
-            rm -rf "$TMP"
-            mkdir -p "$TMP"
-            tar -C "$TMP" -xzf "$SRC"
-
-            echo "🔑 Setting permissions..."
-            chown -R www-data:www-data "$TMP"
-
-            echo "🔁 Swapping directories atomically..."
-            mv -T "$TMP" "$DST"
-
-            echo "✅ Deployed successfully at $(date -u +%FT%TZ)" > "$DST/DEPLOYED_AT.txt"
+            cd /root/zknowledge
+            git pull origin main
+            pnpm build
+            rsync -av --delete build/ /var/www/zknowledge/out/
+            chown -R www-data:www-data /var/www/zknowledge/out
