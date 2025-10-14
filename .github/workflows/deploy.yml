@@ -13,16 +13,81 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: 🚀 Push latest docs to server & rebuild
+      - name: 🧭 Checkout latest repo
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Node.js and pnpm
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - run: corepack enable
+      - run: corepack use pnpm@10.18.2
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🔎 Lint MDX to catch illegal "<digit" before build
+        run: |
+          if grep -RIn -E '<\s*[0-9]' docs; then
+            echo "❌ Found illegal '<digit' pattern in docs (like <0.5). Use &lt; or backticks instead."
+            exit 1
+          fi
+
+      - name: 🏗️ Build Docusaurus
+        run: pnpm build
+
+      - name: 🧳 Compress build artifacts
+        run: tar -C build -czf build.tar.gz .
+
+      - name: 🚀 Deploy to zwiki.ztrader.ai via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
+          script_stop: true
           script: |
-            cd /root/zknowledge
-            git pull origin main
-            pnpm build
-            rsync -av --delete build/ /var/www/zknowledge/out/
-            chown -R www-data:www-data /var/www/zknowledge/out
+            set -euo pipefail
+
+            echo "📂 Preparing temp directories..."
+            mkdir -p /var/www/zknowledge/_incoming
+            rm -rf /var/www/zknowledge/_incoming/build.tar.gz || true
+
+      - name: 📤 Upload build artifact to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "build.tar.gz"
+          target: "/var/www/zknowledge/_incoming/"
+
+      - name: 🔄 Extract and atomically replace current version
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script_stop: true
+          script: |
+            set -euo pipefail
+
+            TMP=/var/www/zknowledge/_tmp_out
+            DST=/var/www/zknowledge/out
+            SRC=/var/www/zknowledge/_incoming/build.tar.gz
+
+            echo "🧩 Unpacking new build..."
+            rm -rf "$TMP"
+            mkdir -p "$TMP"
+            tar -C "$TMP" -xzf "$SRC"
+
+            echo "🔑 Setting permissions..."
+            chown -R www-data:www-data "$TMP"
+
+            echo "🔁 Swapping directories atomically..."
+            mv -T "$TMP" "$DST"
+
+            echo "✅ Deployed successfully at $(date -u +%FT%TZ)" > "$DST/DEPLOYED_AT.txt"
